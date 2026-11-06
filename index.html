@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>약물 안전 탐험대 | 초등 4학년</title>
+<style>
+:root{--navy:#24436b;--blue:#4b9be8;--sky:#eaf7ff;--yellow:#ffda67;--pink:#ff9db4;--green:#6bc99b;--ink:#26364a;--white:#fff}
+*{box-sizing:border-box}body{margin:0;font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;color:var(--ink);background:linear-gradient(180deg,#dff4ff,#fff7e8);min-height:100vh}
+header{background:linear-gradient(120deg,#4b9be8,#75c9e9);color:white;padding:24px 16px 30px;text-align:center;border-radius:0 0 32px 32px}
+header h1{font-size:clamp(27px,5vw,42px);margin:8px 0}header p{margin:5px auto;max-width:720px;line-height:1.6}
+.mascots{display:flex;justify-content:center;gap:12px;margin:12px 0 4px}.mascot{width:64px;height:64px;border-radius:22px;background:#fff;display:grid;place-items:center;font-size:37px;box-shadow:0 5px 0 #347bb4;transform:rotate(-3deg)}.mascot:nth-child(2){transform:rotate(4deg)}.mascot:nth-child(3){transform:rotate(-2deg)}
+main{max-width:1050px;margin:22px auto;padding:0 14px 40px}
+.status{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;align-items:center;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:0 4px 14px #24436b12;margin-bottom:16px;font-weight:700}
+.progress{height:12px;background:#e5edf5;border-radius:99px;overflow:hidden;flex:1;min-width:120px}.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#69c99b,#4b9be8);transition:.3s}
+nav{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.tab{border:0;border-radius:14px;padding:11px 15px;background:#fff;color:var(--navy);font-weight:800;cursor:pointer;box-shadow:0 3px 0 #d8e5ef}.tab.active{background:var(--yellow);box-shadow:0 3px 0 #e8b83f}
+.panel{display:none;background:#fff;border-radius:24px;padding:clamp(17px,3vw,28px);box-shadow:0 8px 24px #24436b12;margin:14px 0}.panel.active{display:block}
+h2{color:var(--navy);margin:0 0 12px;font-size:25px}h3{color:#315b86;margin:18px 0 8px}
+.lead{font-size:17px;line-height:1.75}.bubble{background:#eef8ff;border-left:6px solid var(--blue);padding:14px 16px;border-radius:14px;line-height:1.7;margin:12px 0}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:14px 0}.info{background:#f7fbff;border:2px solid #e2f0fa;border-radius:18px;padding:15px;line-height:1.6}.info .emoji{font-size:32px}
+.btn{border:0;border-radius:14px;background:var(--blue);color:white;padding:12px 18px;font-weight:800;font-size:15px;cursor:pointer;margin:5px 4px 5px 0;box-shadow:0 3px 0 #2874b8}.btn.secondary{background:#6b829b;box-shadow:0 3px 0 #4c6177}.btn.good{background:#36a879;box-shadow:0 3px 0 #25845d}.btn.warn{background:#ef8d54;box-shadow:0 3px 0 #c96b36}
+.choice{display:block;width:100%;text-align:left;background:#f5f9fd;border:2px solid #dce9f3;border-radius:14px;padding:13px;margin:8px 0;font-size:16px;cursor:pointer;color:var(--ink);font-weight:700}.choice:hover{border-color:var(--blue);background:#eef8ff}.choice:disabled{cursor:default;opacity:.9}
+.feedback{padding:13px;border-radius:14px;margin:12px 0;font-weight:700;line-height:1.6;display:none}.feedback.show{display:block}.feedback.ok{background:#e7f8ee;color:#17663f}.feedback.no{background:#fff1e9;color:#9b4c20}
+.question{font-size:19px;font-weight:800;line-height:1.6;margin:14px 0}
+.tag{display:inline-block;background:#fff0bd;color:#765500;padding:5px 10px;border-radius:99px;font-size:13px;font-weight:800}
+.scorebig{font-size:34px;color:#25845d;font-weight:900}
+.sortzone{display:grid;grid-template-columns:1fr 1fr;gap:12px}.dropbox{background:#f2f8fd;border:2px dashed #9abbd4;border-radius:16px;padding:12px;min-height:140px}.dropbox h3{margin:2px 0 10px}.item{display:inline-block;background:#fff;border:2px solid #dce9f3;border-radius:12px;padding:10px;margin:5px;cursor:pointer;font-weight:700}.item.selected{border-color:#e4aa23;background:#fff7d9}.item.placed{opacity:.35;pointer-events:none}
+canvas.arcade{display:block;width:100%;max-width:760px;height:auto;background:linear-gradient(#dff5ff,#f5fcff);border:3px solid #b9def2;border-radius:18px;margin:12px auto;touch-action:none}
+.game-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0}
+.game-hud{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;font-weight:800;color:#315b86}
+footer{text-align:center;color:#60758a;font-size:13px;padding:20px;line-height:1.7}
+@media(max-width:600px){.sortzone{grid-template-columns:1fr}.status{font-size:14px}.tab{flex:1;min-width:42%}.mascot{width:55px;height:55px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="mascots" aria-label="귀여운 탐험대 친구들"><div class="mascot">🐧</div><div class="mascot">🐻</div><div class="mascot">🦊</div></div>
+ <span class="tag">초등학교 4학년 보건·안전 교육</span>
+ <h1>약물 안전 탐험대!</h1>
+ <p>친구들과 미션을 해결하며 약물을 안전하게 사용하는 방법을 배워요.<br>모르는 것은 만지거나 먹지 말고, 믿을 수 있는 어른에게 알려요!</p>
+</header>
+<main>
+ <div class="status"><span>⭐ 모은 별: <b id="stars">0</b></span><div class="progress"><span id="bar"></span></div><span id="progressText">미션 0 / 4</span></div>
+ <nav>
+  <button class="tab active" data-tab="learn">📚 배우기</button>
+  <button class="tab" data-tab="sort">🧺 안전 분류</button>
+  <button class="tab" data-tab="ox">⭕ OX 퀴즈</button>
+  <button class="tab" data-tab="quiz">🧠 도전 퀴즈</button>
+  <button class="tab" data-tab="mission">🚀 상황 미션</button>
+  <button class="tab" data-tab="race">🏎️ 안전 레이싱</button>
+  <button class="tab" data-tab="bubble">🫧 버블 슈팅</button>
+ </nav>
+
+ <section class="panel active" id="learn">
+  <h2>1. 약물이란 무엇일까요?</h2>
+  <p class="lead">약물은 우리 몸과 마음에 영향을 주는 물질이에요. 약은 아플 때 도움을 줄 수 있지만, <b>정해진 방법과 양을 지키지 않으면 건강을 해칠 수 있어요.</b></p>
+  <div class="cards">
+   <div class="info"><div class="emoji">💊</div><b>의약품</b><br>해열제, 소화제, 예방접종제처럼 질병을 예방하거나 치료하는 데 쓰여요.</div>
+   <div class="info"><div class="emoji">☕</div><b>카페인</b><br>커피, 콜라, 초콜릿 등에 들어 있을 수 있어요. 많이 섭취하면 잠이 잘 오지 않거나 심장이 두근거릴 수 있어요.</div>
+   <div class="info"><div class="emoji">🚭</div><b>니코틴</b><br>담배에 들어 있는 중독성 물질이에요. 담배는 몸에 해로워요.</div>
+   <div class="info"><div class="emoji">🍺</div><b>알코올</b><br>술에 들어 있어요. 판단력과 움직임을 둔하게 하고 건강을 해칠 수 있어요.</div>
+  </div>
+  <h3>2. 오용·남용·중독 알아보기</h3>
+  <div class="cards">
+   <div class="info"><b>오용</b><p>치료를 위해 쓰는 약을 정해진 양이나 방법과 다르게 사용하는 것</p><small>예: 한 알만 먹으라고 안내받았는데 마음대로 두 알을 먹어요.</small></div>
+   <div class="info"><b>남용</b><p>치료 목적이 아닌 다른 목적으로 약물을 부적절하게 사용하는 것</p><small>예: 기분을 바꾸려고 약을 함부로 사용해요.</small></div>
+   <div class="info"><b>중독</b><p>약물 등의 영향으로 몸이나 마음에 문제가 생기고, 스스로 조절하기 어려워지는 상태</p></div>
+  </div>
+  <div class="bubble"><b>⭐ 안전 약속 4가지</b><br>① 약은 보호자나 의료진의 안내에 따라 사용해요.<br>② 내 약을 친구에게 주거나 친구의 약을 먹지 않아요.<br>③ 모르는 약·가루·액체·전자담배 등을 만지거나 맛보지 않아요.<br>④ 누군가 권하거나 위험한 물건을 발견하면 거절하고 믿을 수 있는 어른에게 알려요.</div>
+  <button class="btn good" onclick="complete('learn')">배우기 완료! 별 받기 ⭐</button>
+ </section>
+
+ <section class="panel" id="sort">
+  <h2>2. 안전 행동 분류 게임</h2>
+  <p class="lead">아래 행동 카드를 눌러 알맞은 바구니에 넣어 보세요. 모든 카드를 분류하면 별을 얻어요!</p>
+  <div id="items"></div>
+  <div class="sortzone">
+   <div class="dropbox"><h3>🟢 안전한 행동</h3><div id="safeBox">카드를 선택한 뒤 이 버튼을 눌러요.</div><button class="btn good" onclick="place('safe')">여기에 넣기</button></div>
+   <div class="dropbox"><h3>🔴 위험한 행동</h3><div id="riskBox">카드를 선택한 뒤 이 버튼을 눌러요.</div><button class="btn warn" onclick="place('risk')">여기에 넣기</button></div>
+  </div>
+  <div id="sortFeedback" class="feedback"></div>
+  <button class="btn secondary" onclick="resetSort()">다시 하기</button>
+ </section>
+
+ <section class="panel" id="ox">
+  <h2>3. 번개 OX 퀴즈</h2><p>문장을 읽고 O 또는 X를 선택하세요!</p>
+  <div class="tag" id="oxCount">1 / 5</div><div class="question" id="oxQuestion"></div>
+  <button class="btn good" onclick="answerOX(true)">⭕ O 맞아요</button><button class="btn warn" onclick="answerOX(false)">❌ X 아니에요</button>
+  <div id="oxFeedback" class="feedback"></div><button class="btn" id="oxNext" onclick="nextOX()" style="display:none">다음 문제 →</button>
+ </section>
+
+ <section class="panel" id="quiz">
+  <h2>4. 탐험대 도전 퀴즈</h2><p>상황을 읽고 가장 안전한 행동을 골라 보세요.</p>
+  <div class="tag" id="quizCount">1 / 5</div><div class="question" id="quizQuestion"></div>
+  <div id="quizChoices"></div><div id="quizFeedback" class="feedback"></div>
+  <button class="btn" id="quizNext" onclick="nextQuiz()" style="display:none">다음 문제 →</button>
+ </section>
+
+ <section class="panel" id="mission">
+  <h2>5. 마지막 상황 미션!</h2>
+  <p class="lead">탐험대가 학교와 집에서 만날 수 있는 상황이에요. 가장 안전한 선택을 해보세요.</p>
+  <div class="info"><div class="emoji">🎒</div><div class="question">친구가 “이 알약을 먹으면 더 신나고 힘이 날 거야”라며 정체를 알 수 없는 알약을 건넸어요. 어떻게 할까요?</div>
+   <button class="choice" onclick="missionAnswer(0)">A. 친구가 준 것이니 한 번 먹어 본다.</button>
+   <button class="choice" onclick="missionAnswer(1)">B. 먹지 않고 거절한 뒤 선생님이나 보호자에게 알린다.</button>
+   <button class="choice" onclick="missionAnswer(2)">C. 다른 친구에게 나누어 준다.</button>
+   <div id="missionFeedback" class="feedback"></div>
+  </div>
+  <div class="bubble"><b>위험한 물질을 발견했을 때</b><br>직접 만지거나 옮기지 말고 그 자리에서 멀어진 뒤 어른에게 알려요. 누군가 몸이 아프거나 위급해 보이면 즉시 어른에게 알리고 119에 도움을 요청해요.</div>
+  <button class="btn good" onclick="complete('mission')">미션 확인 완료 ⭐</button>
+ </section>
+ <section class="panel" id="race">
+  <h2>🏎️ 안전 레이싱 게임</h2>
+  <p class="lead">안전 자동차를 움직여 건강 별을 모으고, 위험 표지판은 피해 보세요! 위험한 물건을 직접 만지지 않는 안전 습관을 게임으로 연습해요.</p>
+  <div class="game-hud"><span>⭐ 건강 별: <b id="raceScore">0</b></span><span>⏱️ 남은 시간: <b id="raceTime">30</b>초</span></div>
+  <canvas id="raceCanvas" class="arcade" width="720" height="360"></canvas>
+  <div class="game-controls">
+   <button class="btn secondary" onclick="moveRace(-1)">⬅️ 왼쪽</button>
+   <button class="btn good" onclick="startRace()">게임 시작 / 다시 하기</button>
+   <button class="btn secondary" onclick="moveRace(1)">오른쪽 ➡️</button>
+  </div>
+  <div id="raceMsg" class="feedback show">시작 버튼을 누르세요. 컴퓨터에서는 ← → 방향키, 태블릿에서는 좌우 버튼을 사용해요.</div>
+ </section>
+
+ <section class="panel" id="bubble">
+  <h2>🫧 버블 슈팅 게임</h2>
+  <p class="lead">물방울 버블을 발사해 화면에 나타나는 위험 신호 풍선을 톡톡 터뜨려요! 안전한 물건은 맞히지 않도록 조심하세요.</p>
+  <div class="game-hud"><span>💧 점수: <b id="bubbleScore">0</b></span><span>🎈 남은 기회: <b id="bubbleLife">5</b></span></div>
+  <canvas id="bubbleCanvas" class="arcade" width="720" height="360"></canvas>
+  <div class="game-controls">
+   <button class="btn good" onclick="startBubble()">게임 시작 / 다시 하기</button>
+   <button class="btn" onclick="moveAstronaut(-1)">⬅️ 왼쪽</button>
+   <button class="btn" onclick="moveAstronaut(1)">오른쪽 ➡️</button>
+   <button class="btn" onclick="shootBubble()">🫧 물방울 발사!</button>
+  </div>
+  <div id="bubbleMsg" class="feedback show">시작 버튼을 누른 뒤 물방울 발사 버튼을 눌러요. 컴퓨터에서는 스페이스바도 사용할 수 있어요.</div>
+ </section>
+
+ <section class="panel" id="finish">
+  <h2>🎉 약물 안전 탐험 완료!</h2><p class="lead">오늘 배운 안전 약속을 기억해요. 나와 친구의 건강을 지키는 멋진 안전 탐험대예요!</p><div class="scorebig" id="finalStars">0개 별</div>
+  <div class="bubble">약은 어른과 의료진의 안내에 따라!<br>모르는 것은 절대 먹거나 만지지 않기!<br>위험한 상황은 믿을 수 있는 어른에게 알리기!</div>
+  <button class="btn" onclick="restart()">처음부터 다시 하기</button>
+ </section>
+</main>
+<footer>수업용 학습 자료 · 첨부된 「약물중독 예방교육」 자료의 핵심 개념을 초등학교 4학년 눈높이로 구성했습니다.<br>화면의 캐릭터는 실제 상표 캐릭터 이미지가 아닌 이모지 친구들로 표현했습니다.</footer>
+<script>
+const $=id=>document.getElementById(id);let stars=0,done=new Set(),selected=null,sortDone=false;
+function update(){ $('stars').textContent=stars;$('bar').style.width=(done.size/4*100)+'%';$('progressText').textContent=`미션 ${done.size} / 4`;if(done.size>=4){$('finish').classList.add('active');document.querySelectorAll('.panel').forEach(p=>{if(p.id!=='finish')p.classList.remove('active')});$('finalStars').textContent=stars+'개 별';}}
+function complete(id){if(!done.has(id)){done.add(id);stars+=2;update();alert('참 잘했어요! 별 2개를 받았어요 ⭐')}else alert('이미 완료한 활동이에요!');}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$(b.dataset.tab).classList.add('active')}));
+const sortData=[['약을 먹기 전에 보호자에게 확인하기','safe'],['친구의 약을 호기심으로 먹기','risk'],['정해진 양과 시간을 지키기','safe'],['모르는 액체를 맛보기','risk'],['위험한 물건을 어른에게 알리기','safe'],['약을 친구에게 나누어 주기','risk']];
+let sortIndex=0,sortScore=0;
+function drawSort(){ $('items').innerHTML=sortData.map((x,i)=>`<button class="item ${i<sortIndex?'placed':''} ${selected===i?'selected':''}" onclick="selectItem(${i})">${i<sortIndex?'✓ ':''}${x[0]}</button>`).join('');}
+function selectItem(i){if(i<sortIndex)return;selected=i;drawSort();}
+function place(kind){if(selected===null){$('sortFeedback').className='feedback show no';$('sortFeedback').textContent='먼저 행동 카드를 하나 선택하세요.';return}let correct=sortData[selected][1]===kind;if(correct){sortScore++;sortIndex++;$(kind==='safe'?'safeBox':'riskBox').innerHTML+=' <span class="item">'+sortData[selected][0]+'</span>'; $('sortFeedback').className='feedback show ok';$('sortFeedback').textContent='정답이에요! 안전한 행동을 잘 골랐어요.';selected=null;drawSort();if(sortIndex===sortData.length&&!sortDone){sortDone=true;stars+=3;update();$('sortFeedback').textContent='모든 카드를 바르게 분류했어요! 별 3개를 받았어요 ⭐';}}else{$('sortFeedback').className='feedback show no';$('sortFeedback').textContent='한 번 더 생각해 볼까요? 약은 어른의 안내에 따라 사용하고, 모르는 것은 만지거나 먹지 않아요.';}}
+function resetSort(){sortIndex=0;selected=null;sortScore=0;sortDone=false;$('safeBox').textContent='카드를 선택한 뒤 이 버튼을 눌러요.';$('riskBox').textContent='카드를 선택한 뒤 이 버튼을 눌러요.';$('sortFeedback').className='feedback';drawSort();}
+drawSort();
+const oxData=[
+['약은 보호자나 의료진의 안내에 따라 사용해야 한다.',true,'약은 정해진 방법과 양을 지켜 사용해야 해요.'],
+['친구가 먹는 약은 나도 먹어도 괜찮다.',false,'사람마다 필요한 약이 달라요. 친구의 약을 먹으면 안 돼요.'],
+['담배 속 니코틴은 중독성이 있는 물질이다.',true,'니코틴은 담배에 들어 있는 중독성 물질이에요.'],
+['술은 판단력과 움직임에 영향을 주지 않는다.',false,'알코올은 판단을 흐리게 하고 움직임을 둔하게 할 수 있어요.'],
+['모르는 약이나 가루를 발견하면 맛을 보지 말고 어른에게 알린다.',true,'직접 만지거나 맛보지 말고 믿을 수 있는 어른에게 알려요.']];
+let oi=0,oxLocked=false,oxScore=0;
+function showOX(){$('oxCount').textContent=(oi+1)+' / '+oxData.length;$('oxQuestion').textContent=oxData[oi][0];$('oxFeedback').className='feedback';$('oxNext').style.display='none';oxLocked=false;}
+function answerOX(v){if(oxLocked)return;oxLocked=true;let ok=v===oxData[oi][1];if(ok)oxScore++;$('oxFeedback').className='feedback show '+(ok?'ok':'no');$('oxFeedback').textContent=(ok?'정답! ':'다시 기억해요. ')+oxData[oi][2];$('oxNext').style.display='inline-block';}
+function nextOX(){if(oi<oxData.length-1){oi++;showOX()}else{$('oxQuestion').textContent=`퀴즈 끝! ${oxScore} / ${oxData.length}개를 맞혔어요.`;$('oxFeedback').className='feedback show ok';$('oxFeedback').textContent='참 잘했어요! 별 2개를 받았어요.';$('oxNext').style.display='none';if(!done.has('ox')){done.add('ox');stars+=2;update();}}}
+showOX();
+const quizData=[
+['약을 먹어야 할 때 가장 먼저 해야 할 일은 무엇일까요?',['약 이름이 예뻐 보이는지 살핀다','보호자나 의료진의 안내를 확인한다','친구에게 먼저 먹어 보라고 한다','효과가 빨리 나도록 양을 늘린다'],1,'약은 나이와 몸 상태에 따라 다를 수 있어요. 어른과 의료진의 안내를 따라야 해요.'],
+['친구가 “네 약 조금만줘!”라고 해요. 어떻게 할까요?',['친구에게 약을 나누어 준다','친구가 먹던 약을 받아 먹는다','약을 주지 않고 어른에게 알린다','약을 반으로 나누어 준다'],2,'약은 다른 사람과 나누어 먹으면 안 돼요. 필요한 도움은 어른에게 요청해요.'],
+['카페인이 들어 있을 수 있는 것은 무엇일까요?',['커피와 콜라','맹물과 얼음','밥과 김','당근과 오이'],0,'카페인은 커피, 콜라, 초콜릿 등에 들어 있을 수 있어요.'],
+['모르는 알약이 책상 위에 있어요. 가장 안전한 행동은?',['색깔을 확인하려고 만진다','냄새를 맡아 본다','조금 맛본다','만지지 않고 선생님께 알린다'],3,'정체를 모르는 물질은 만지거나 먹지 말고 어른에게 알려요.'],
+['약을 정해진 양보다 마음대로 많이 먹는 것은 무엇에 해당할까요?',['오용','운동','휴식','예방접종'],0,'치료를 위해 쓰더라도 양이나 방법을 마음대로 바꾸면 오용이에요.']];
+let qi=0,qLocked=false,qScore=0;
+function showQuiz(){$('quizCount').textContent=(qi+1)+' / '+quizData.length;$('quizQuestion').textContent=quizData[qi][0];$('quizChoices').innerHTML=quizData[qi][1].map((x,i)=>`<button class="choice" onclick="answerQuiz(${i})">${'ABCD'[i]}. ${x}</button>`).join('');$('quizFeedback').className='feedback';$('quizNext').style.display='none';qLocked=false;}
+function answerQuiz(i){if(qLocked)return;qLocked=true;let d=quizData[qi],ok=i===d[2];if(ok)qScore++;[...$('quizChoices').children].forEach(b=>b.disabled=true);$('quizFeedback').className='feedback show '+(ok?'ok':'no');$('quizFeedback').textContent=(ok?'정답이에요! ':'다시 생각해 봐요. ')+d[3];$('quizNext').style.display='inline-block';}
+function nextQuiz(){if(qi<quizData.length-1){qi++;showQuiz()}else{$('quizQuestion').textContent=`도전 퀴즈 완료! ${qScore} / ${quizData.length}개 정답`;$('quizChoices').innerHTML='';$('quizFeedback').className='feedback show ok';$('quizFeedback').textContent='배운 내용을 잘 기억했어요! 별 2개를 받았어요.';$('quizNext').style.display='none';if(!done.has('quiz')){done.add('quiz');stars+=2;update();}}}
+showQuiz();
+let missionDone=false;function missionAnswer(i){if(missionDone)return;missionDone=true;let ok=i===1;$('missionFeedback').className='feedback show '+(ok?'ok':'no');$('missionFeedback').textContent=ok?'훌륭해요! 정체를 모르는 약은 먹지 않고, 믿을 수 있는 어른에게 알려야 해요.':'안전하지 않은 선택이에요. 정체를 모르는 약은 절대 먹거나 다른 사람에게 주지 않아요.';if(ok){stars+=2;update();}}
+
+// 안전 레이싱: 건강 별을 모으고 위험 표지를 피하는 교육용 아케이드
+const rc=$('raceCanvas'),rctx=rc.getContext('2d');
+let raceRunning=false,raceLane=1,raceScore=0,raceTime=30,raceObjects=[],raceTick=0,raceTimer=null,raceFrame=null;
+function moveRace(d){raceLane=Math.max(0,Math.min(2,raceLane+d));}
+function startRace(){
+ if(raceFrame)cancelAnimationFrame(raceFrame);if(raceTimer)clearInterval(raceTimer);
+ raceRunning=true;raceLane=1;raceScore=0;raceTime=30;raceObjects=[];raceTick=0;
+ $('raceScore').textContent='0';$('raceTime').textContent='30';$('raceMsg').className='feedback show';$('raceMsg').textContent='출발! 건강 별을 모으고 위험 표지는 피해요!';
+ raceTimer=setInterval(()=>{if(!raceRunning)return;raceTime--;$('raceTime').textContent=raceTime;if(raceTime<=0)endRace();},1000);
+ raceFrame=requestAnimationFrame(drawRace);
+}
+function drawRace(){
+ if(!raceRunning)return;
+ rctx.clearRect(0,0,720,360);
+ rctx.fillStyle='#b9e8b7';rctx.fillRect(0,0,720,360);
+ rctx.fillStyle='#777f8b';rctx.fillRect(130,0,460,360);
+ rctx.strokeStyle='#fff';rctx.lineWidth=5;rctx.setLineDash([22,18]);
+ rctx.beginPath();rctx.moveTo(283,0);rctx.lineTo(283,360);rctx.moveTo(437,0);rctx.lineTo(437,360);rctx.stroke();rctx.setLineDash([]);
+ rctx.fillStyle='#fff';rctx.font='bold 16px sans-serif';rctx.fillText('건강 별은 모으고 위험 표지는 피하기!',175,28);
+ raceTick++;
+ if(raceTick%38===0)raceObjects.push({lane:Math.floor(Math.random()*3),y:-30,type:Math.random()<.62?'star':'hazard'});
+ raceObjects.forEach(o=>{o.y+=3.1+(30-raceTime)*.045;rctx.font='30px sans-serif';rctx.textAlign='center';rctx.fillText(o.type==='star'?'⭐':['🚭','💊','🍺'][Math.floor(o.y/7)%3],207+o.lane*153,o.y);});
+ const carX=207+raceLane*153;rctx.font='42px sans-serif';rctx.textAlign='center';rctx.fillText('🚙',carX,315);
+ for(let i=raceObjects.length-1;i>=0;i--){let o=raceObjects[i];if(o.y>285&&o.y<335&&o.lane===raceLane){if(o.type==='star'){raceScore+=10;$('raceScore').textContent=raceScore;}else{raceScore=Math.max(0,raceScore-5);$('raceScore').textContent=raceScore;$('raceMsg').textContent='위험 표지를 피했으면 더 좋았겠어요. 다시 집중해요!';}raceObjects.splice(i,1);}else if(o.y>380)raceObjects.splice(i,1);}
+ raceFrame=requestAnimationFrame(drawRace);
+}
+function endRace(){raceRunning=false;clearInterval(raceTimer);if(raceFrame)cancelAnimationFrame(raceFrame);$('raceMsg').className='feedback show ok';$('raceMsg').textContent=`레이싱 완료! 건강 별 ${raceScore}점을 모았어요. 약이나 위험 물질은 가까이하지 않는 것이 중요해요.`;if(!done.has('race')){done.add('race');stars+=Math.max(1,Math.floor(raceScore/20));update();}}
+document.addEventListener('keydown',e=>{
+ if(e.key==='ArrowLeft'){
+   if($('bubble').classList.contains('active')){e.preventDefault();moveAstronaut(-1);}
+   else moveRace(-1);
+ }
+ if(e.key==='ArrowRight'){
+   if($('bubble').classList.contains('active')){e.preventDefault();moveAstronaut(1);}
+   else moveRace(1);
+ }
+ if(e.code==='Space'&&$('bubble').classList.contains('active')){e.preventDefault();shootBubble();}
+});
+
+// 버블 슈팅: 무기 대신 물방울을 발사해 위험 신호 풍선을 터뜨리는 비폭력 게임
+const bc=$('bubbleCanvas'),bctx=bc.getContext('2d');
+let bubbleRunning=false,bubbleScore=0,bubbleLife=5,bubbles=[],hazards=[],bubbleFrame=null,bubbleTick=0,astronautX=360;
+function startBubble(){if(bubbleFrame)cancelAnimationFrame(bubbleFrame);bubbleRunning=true;bubbleScore=0;bubbleLife=5;bubbles=[];hazards=[];bubbleTick=0;astronautX=360;$('bubbleScore').textContent='0';$('bubbleLife').textContent='5';$('bubbleMsg').className='feedback show';$('bubbleMsg').textContent='물방울을 발사해 위험 신호 풍선을 맞혀요!';bubbleFrame=requestAnimationFrame(drawBubble);}
+function moveAstronaut(direction){
+ if(!bubbleRunning)return;
+ astronautX=Math.max(35,Math.min(685,astronautX+direction*28));
+}
+function shootBubble(){if(!bubbleRunning)return;bubbles.push({x:astronautX,y:285});}
+function drawBubble(){
+ if(!bubbleRunning)return;
+ bctx.clearRect(0,0,720,360);bctx.fillStyle='#e7f8ff';bctx.fillRect(0,0,720,360);
+ bctx.fillStyle='#b8e8d0';bctx.fillRect(0,320,720,40);
+ bctx.font='40px sans-serif';bctx.textAlign='center';bctx.fillText('🧑‍🚀',astronautX,316);
+ bubbleTick++;if(bubbleTick%65===0)hazards.push({x:45+Math.random()*630,y:-25,vy:1.5+Math.random(),emoji:['🚭','🍺','❓'][Math.floor(Math.random()*3)]});
+ hazards.forEach(h=>{h.y+=h.vy;bctx.font='34px sans-serif';bctx.fillText(h.emoji,h.x,h.y);});
+ bubbles.forEach(b=>{b.y-=7;bctx.beginPath();bctx.arc(b.x,b.y,9,0,Math.PI*2);bctx.fillStyle='#70d7ff';bctx.fill();bctx.strokeStyle='#fff';bctx.lineWidth=3;bctx.stroke();});
+ for(let i=hazards.length-1;i>=0;i--){let h=hazards[i],hit=false;for(let j=bubbles.length-1;j>=0;j--){let b=bubbles[j];if(Math.hypot(h.x-b.x,h.y-b.y)<30){hazards.splice(i,1);bubbles.splice(j,1);bubbleScore+=10;$('bubbleScore').textContent=bubbleScore;hit=true;break;}}if(!hit&&h.y>330){hazards.splice(i,1);bubbleLife--;$('bubbleLife').textContent=bubbleLife;}}
+ bubbles=bubbles.filter(b=>b.y>-10);
+ if(bubbleLife<=0){bubbleRunning=false;$('bubbleMsg').className='feedback show no';$('bubbleMsg').textContent=`게임 종료! ${bubbleScore}점을 얻었어요. 다시 도전해 보세요.`;return;}
+ if(bubbleScore>=50){bubbleRunning=false;$('bubbleMsg').className='feedback show ok';$('bubbleMsg').textContent=`성공! ${bubbleScore}점이에요. 위험 신호를 잘 알아보았어요!`;if(!done.has('bubble')){done.add('bubble');stars+=3;update();}return;}
+ bubbleFrame=requestAnimationFrame(drawBubble);
+}
+
+function restart(){raceRunning=false;bubbleRunning=false;if(raceTimer)clearInterval(raceTimer);if(raceFrame)cancelAnimationFrame(raceFrame);if(bubbleFrame)cancelAnimationFrame(bubbleFrame);stars=0;done.clear();oi=0;oxScore=0;qi=0;qScore=0;missionDone=false;sortDone=false;sortIndex=0;selected=null;update();resetSort();showOX();showQuiz();$('missionFeedback').className='feedback';document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelector('[data-tab="learn"]').classList.add('active');document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));$('learn').classList.add('active');}
+</script>
+</body>
+</html>
